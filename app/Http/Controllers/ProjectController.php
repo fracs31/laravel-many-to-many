@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateProjectRequest;
 use Illuminate\Support\Str; //str
 use Illuminate\Http\Request; //request
 use App\Models\Type; //type
+use App\Models\Technology; //technology
 
 class ProjectController extends Controller
 {
@@ -37,7 +38,8 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::orderBy("name", "asc")->get(); //tipi di progetto
-        return view("projects.create", compact("types")); //restituisco la vista "create"
+        $technologies = Technology::orderBy("name", "asc")->get(); //tipi di tecnologie
+        return view("projects.create", compact("types", "technologies")); //restituisco la vista "create"
     }
 
     /**
@@ -52,6 +54,10 @@ class ProjectController extends Controller
         $data["url"] = "http://www.projects.com/" . $data["title"]; //url
         $data["slug"] = Str::slug($data["title"], "-"); //slug
         $newProject = Project::create($data); //creo un nuovo progetto
+        //Se vengono selezionate anche le tecnologie
+        if (isset($data["technologies"])) {
+            $newProject->technologies()->attach($data["technologies"]); //salvo i dati nella tabella ponte
+        }
         return to_route("projects.show", $newProject); //restistuisco la rotta "show"
     }
 
