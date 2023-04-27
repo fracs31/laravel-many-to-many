@@ -31,7 +31,7 @@ class ProjectSeeder extends Seeder
             $newProject->url = "http://www.projects.com/" . $newProject->slug; //url
             $newProject->type_id = $faker->randomElement($type_ids); //id del tipo di progetto
             $newProject->save(); //salvo i dati
-            $newProject->technologies()->attach($technology_ids); //inserisco i dati nella tabella ponte
+            $newProject->technologies()->attach($faker->randomElements($technology_ids, 2)); //inserisco i dati nella tabella ponte
         }
     }
 }
