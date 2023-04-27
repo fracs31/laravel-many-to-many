@@ -81,7 +81,8 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::orderBy("name", "asc")->get(); //tipi di progetto
-        return view("projects.edit", compact("project", "types")); //restituisco la vista "edit"
+        $technologies = Technology::orderBy("name", "asc")->get(); //tipi di tecnologie
+        return view("projects.edit", compact("project", "types", "technologies")); //restituisco la vista "edit"
     }
 
     /**
@@ -97,6 +98,12 @@ class ProjectController extends Controller
         $data["url"] = "http://www.projects.com/" . $data["title"]; //url
         $data["slug"] = Str::slug($data["title"], "-"); //slug
         $project->update($data); //creo un nuovo progetto
+        //Se vengono selezionate anche le tecnologie
+        if (isset($data["technologies"])) {
+            $project->technologies()->sync($data["technologies"]); //aggiorno la tabella ponte
+        } else { //altrimenti
+            $project->technologies()->sync([]); //cancello la relazione
+        }
         return to_route("projects.show", $project); //restistuisco la rotta "show"
     }
 
