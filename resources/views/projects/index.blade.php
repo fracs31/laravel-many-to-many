@@ -44,6 +44,7 @@
                     <th scope="col">Titolo</th>
                     <th scope="col">Cliente</th>
                     <th scope="col">Tipo</th>
+                    <th scope="col">Tecnologie</th>
                     <th scope="col">Descrizione</th>
                     <th scope="col">URL</th>
                     <th scope="col">Data di cancellazione</th>
@@ -65,6 +66,14 @@
                         <td>{{ $project->client }}</td>
                         {{-- Tipo --}}
                         <td>{{ $project->type->name }}</td>
+                        {{-- Tecnologie --}}
+                        <td>
+                            {{-- Ciclo --}}
+                            @foreach ($project->technologies()->orderBy("name", "asc")->get() as $technology)
+                                {{-- Nome della tecnologia --}}
+                                <span class="badge rounded-pill text-bg-primary">{{ $technology->name }}</span>
+                            @endforeach
+                        </td>
                         {{-- Descrizione --}}
                         <td>{{ $project->description }}</td>
                         {{-- URL --}}
