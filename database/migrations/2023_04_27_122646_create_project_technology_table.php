@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('project_technology', function (Blueprint $table) {
             $table->unsignedBigInteger("project_id"); //id del progetto
-            $table->foreign("project_id")->references("id")->on("projects"); //riferimento della chiave esterna dei progetti
+            $table->foreign("project_id")->references("id")->on("projects")->onDelete("CASCADE")->onUpdate("CASCADE"); //riferimento della chiave esterna dei progetti
             $table->unsignedBigInteger("technology_id"); //id della tecnologia
-            $table->foreign("technology_id")->references("id")->on("technologies"); //riferimento della chiave esterna delle tecnologie
+            $table->foreign("technology_id")->references("id")->on("technologies")->onDelete("CASCADE")->onUpdate("CASCADE"); //riferimento della chiave esterna delle tecnologie
         });
     }
 
